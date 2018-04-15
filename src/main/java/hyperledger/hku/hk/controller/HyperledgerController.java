@@ -4,13 +4,14 @@ import hyperledger.hku.hk.utils.HttpUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@RestController
+@Controller
 public class HyperledgerController {
     private static final String PROTECTED_RESOURCE_URL = "http://hyperledger.hku.hk/api/";
 
