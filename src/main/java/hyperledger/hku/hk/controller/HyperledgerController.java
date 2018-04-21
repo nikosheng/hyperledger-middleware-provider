@@ -38,7 +38,7 @@ public class HyperledgerController {
     @RequestMapping(value = "/api/{item}", method = RequestMethod.GET)
     @ResponseBody
     @AccessToken
-    public String application(@PathVariable String item) throws Exception {
+    public String application(@PathVariable String item, HttpServletRequest request) throws Exception {
         String ret = null;
         String accessToken = redisTemplate.opsForValue().get(ACCESS_TOKEN);
 
@@ -57,7 +57,7 @@ public class HyperledgerController {
     @RequestMapping(value = "/api/apply")
     @ResponseBody
     @AccessToken
-    public String apply(@RequestBody Apply apply) throws Exception {
+    public String apply(@RequestBody Apply apply, HttpServletRequest request) throws Exception {
         String ret = null;
         String accessToken = redisTemplate.opsForValue().get(ACCESS_TOKEN);
 
