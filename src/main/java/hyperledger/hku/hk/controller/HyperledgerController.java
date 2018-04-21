@@ -1,5 +1,7 @@
 package hyperledger.hku.hk.controller;
 
+import hyperledger.hku.hk.annotate.RemoteRequest;
+import hyperledger.hku.hk.model.Apply;
 import hyperledger.hku.hk.utils.HttpUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
@@ -36,6 +38,7 @@ public class HyperledgerController {
 
     @RequestMapping(value = "/api/{item}", method = RequestMethod.GET)
     @ResponseBody
+    @RemoteRequest
     public String application(@PathVariable String item, HttpServletRequest request) throws Exception {
         String ret = null;
         String accessToken = redisTemplate.opsForValue().get(ACCESS_TOKEN);
@@ -57,6 +60,12 @@ public class HyperledgerController {
 
         return ret;
     }
+
+//    @RequestMapping(value = "/api/apply")
+//    @ResponseBody
+//    public String apply(@RequestBody Apply apply, HttpServletRequest request) {
+//
+//    }
 
     private String getAccessToken(Cookie[] cookies) {
         String accessToken = null;

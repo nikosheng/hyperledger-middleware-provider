@@ -1,6 +1,6 @@
 spring:
   application:
-    name: cloud-provider
+    name: service-provider
   profiles:
     active: provider1
   thymeleaf:
