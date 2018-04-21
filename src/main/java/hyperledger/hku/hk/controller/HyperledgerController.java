@@ -1,6 +1,6 @@
 package hyperledger.hku.hk.controller;
 
-import hyperledger.hku.hk.annotate.RemoteRequest;
+import hyperledger.hku.hk.annotate.AccessToken;
 import hyperledger.hku.hk.model.Apply;
 import hyperledger.hku.hk.utils.HttpUtils;
 import org.apache.commons.lang.StringUtils;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.concurrent.TimeUnit;
 
 @Controller
 public class HyperledgerController {
@@ -38,8 +37,8 @@ public class HyperledgerController {
 
     @RequestMapping(value = "/api/{item}", method = RequestMethod.GET)
     @ResponseBody
-    @RemoteRequest
-    public String application(@PathVariable String item, HttpServletRequest request) throws Exception {
+    @AccessToken
+    public String application(@PathVariable String item) throws Exception {
         String ret = null;
         String accessToken = redisTemplate.opsForValue().get(ACCESS_TOKEN);
 
@@ -49,25 +48,28 @@ public class HyperledgerController {
                     HttpUtils.get(url);
             HttpEntity entity = response.getEntity();
             ret = EntityUtils.toString(entity);
+            EntityUtils.consume(entity);
         }
 
         return ret;
     }
 
-//    @RequestMapping(value = "/api/apply")
-//    @ResponseBody
-//    public String apply(@RequestBody Apply apply, HttpServletRequest request) {
-//
-//    }
+    @RequestMapping(value = "/api/apply")
+    @ResponseBody
+    @AccessToken
+    public String apply(@RequestBody Apply apply) throws Exception {
+        String ret = null;
+        String accessToken = redisTemplate.opsForValue().get(ACCESS_TOKEN);
 
-    private String getAccessToken(Cookie[] cookies) {
-        String accessToken = null;
-        for (Cookie cookie : cookies) {
-            if (ACCESS_TOKEN.equals(cookie.getName())) {
-                String value = cookie.getValue();
-                accessToken = value.substring(4, value.indexOf("."));
-            }
+        if(StringUtils.isNotEmpty(accessToken)) {
+            String url = String.format("%s%s?access_token=%s", PROTECTED_RESOURCE_URL, "apply", accessToken);
+
+            HttpResponse response = HttpUtils.post(url, apply.toMap(), "utf-8");
+            HttpEntity entity = response.getEntity();
+            ret = EntityUtils.toString(entity);
+            EntityUtils.consume(entity);
         }
-        return accessToken;
+
+        return ret;
     }
 }
