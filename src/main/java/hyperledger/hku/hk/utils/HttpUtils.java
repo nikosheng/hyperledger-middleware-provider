@@ -1,5 +1,6 @@
 package hyperledger.hku.hk.utils;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -7,6 +8,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
@@ -30,13 +32,14 @@ public class HttpUtils {
         httpPost.addHeader("Content-type", "application/json");
 
         //parameters
-        List<NameValuePair> pairs = new ArrayList<>();
+        JSONObject postData = new JSONObject();
         if (params != null) {
             for (Map.Entry<String, String> entry : params.entrySet()) {
-                pairs.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+                postData.put(entry.getKey(), entry.getValue());
             }
         }
-        httpPost.setEntity(new UrlEncodedFormEntity(pairs, encoding));
+
+        httpPost.setEntity(new StringEntity(postData.toString(), encoding));
         CloseableHttpResponse response = client.execute(httpPost);
         return response;
     }
