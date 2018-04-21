@@ -42,15 +42,8 @@ public class HyperledgerController {
     public String application(@PathVariable String item, HttpServletRequest request) throws Exception {
         String ret = null;
         String accessToken = redisTemplate.opsForValue().get(ACCESS_TOKEN);
-        if (StringUtils.isEmpty(accessToken)) {
-            Cookie[] cookies = request.getCookies();
-            if (cookies != null && cookies.length > 0) {
-                accessToken = getAccessToken(cookies);
-            }
-        }
 
-        if (StringUtils.isNotEmpty(accessToken)) {
-            redisTemplate.opsForValue().set(ACCESS_TOKEN, accessToken, 7, TimeUnit.DAYS);
+        if(StringUtils.isNotEmpty(accessToken)) {
             String url = String.format("%s%s?access_token=%s", PROTECTED_RESOURCE_URL, item, accessToken);
             HttpResponse response =
                     HttpUtils.get(url);
