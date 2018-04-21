@@ -3,4 +3,4 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://hyperledger.hku.hk:8761/eureka/
+      defaultZone: http://eureka:8761/eureka/
