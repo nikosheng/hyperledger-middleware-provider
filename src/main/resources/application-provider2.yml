@@ -8,4 +8,4 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://http://hyperledger.hku.hk:8761/eureka/
+      defaultZone: http://hyperledger.hku.hk:8761/eureka/
