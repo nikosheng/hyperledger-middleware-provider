@@ -2,7 +2,7 @@ spring:
   application:
     name: service-provider
   profiles:
-    active: provider1
+    active: provider2
   thymeleaf:
     prefix: classpath:/templates/
   #Redis Configuration
@@ -15,3 +15,4 @@ spring:
       max-idle: 8
       min-idle: 0
     timeout: 0
+
